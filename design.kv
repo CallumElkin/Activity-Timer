@@ -1,0 +1,145 @@
+<LoginScreen>
+    GridLayout:
+        cols: 1
+        GridLayout:
+            cols: 1
+            padding: 15, 15
+            spacing: 20, 20
+            Label:
+                text: "User Login"
+                font_size: '20sp'
+            TextInput:
+                hint_text: "Username"
+                id: username
+            TextInput:
+                hint_text: "Password"
+                password: True
+                id: password
+            RelativeLayout:   
+                Button:
+                    text: "Login"
+                    on_press: root.login(root.ids.username.text, root.ids.password.text)
+                    size_hint: 0.3, 0.7
+                    pos_hint: {'center_x':0.5, 'center_y': 0.5}
+            Label:
+                id: login_wrong
+                text: ""
+
+        GridLayout:
+            size_hint: 0.2,0.2
+            padding: 15, 15
+            spacing: 15, 15
+            cols: 2
+            Button:
+                text: "Forgot Password"
+                pos: 50, 50
+                size_hint: (0.2, 0.2)
+                background_color: 1, 1, 1, 0
+                opacity: 1 if self.state == 'normal' else 0.5
+            Button:
+                text: "Sign Up"
+                size_hint: (0.2, 0.2)
+                background_color: 1, 1, 1, 0
+                on_press: root.sign_up()
+
+<SignUpScreen>
+    GridLayout:
+        cols: 1
+        padding:15, 15
+        spacing:20,20
+        Label:
+            text: "Choose username and password:"
+        TextInput:
+            hint_text: "Username"
+            id: create_username
+        TextInput:
+            hint_text: "Password"
+            id: create_password
+        Label:
+            text:""
+            id: username_creation_response 
+        Button:
+            text: "Create account"
+            on_press: root.add_user(root.ids.create_username.text, root.ids.create_password.text)
+        Button:
+            text: "Return to login screen"
+            on_press: root.go_to_login_screen()
+
+<SignUpSuccess>
+    GridLayout:
+        cols: 1
+        padding:15, 15
+        spacing:20,20
+        Label:
+            text: "Account successfully created"
+        Button:
+            text: "Return to login page"
+            on_press: root.go_to_login_screen()
+
+<DashboardScreen>
+    BoxLayout:
+        orientation: 'vertical'
+        RelativeLayout:
+            size_hint_y: 0.2
+            padding:15, 15
+            spacing:20,20
+            TextInput:
+                hint_text: "Description"
+                pos_hint: {'center_x': 0.45, 'center_y': 0.5}
+                size_hint: (0.3, 0.5)
+            Button:
+                text: "Start"
+                pos_hint: {'center_x': 0.7, 'center_y': 0.5}
+                size_hint: (0.1, 0.5)
+                on_press: root.stopwatch_start()
+            Button:
+                text: "Stop"
+                pos_hint: {'center_x': 0.8, 'center_y': 0.5}
+                size_hint: (0.1, 0.5)
+            Label:
+                text: "0:0:0"
+                id: elapsed_time
+                pos_hint: {'center_x': 0.95, 'center_y': 0.5}
+                size_hint: (0.3, 0.5)
+        BoxLayout:
+            orientation: 'horizontal'
+            RelativeLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.3
+                Button:
+                    text: "Entry Log"
+                    size_hint_y: None
+                    size_y: 30
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.81}
+                Button:
+                    text: "Account"
+                    size_hint_y: None
+                    size_y: 30
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.61}
+                Button:
+                    text: "Logout"
+                    size_hint_y: None
+                    size_y: 30
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.41}
+                    on_press: root.go_to_login_screen()
+            GridLayout:
+                size_hint_x: 0.7
+                rows:2
+                Label:
+                    text: "This Week: "
+                    size_hint_y: 0.1
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'middle'
+                    font_size: '18sp'
+                Button:
+                    text: "Dashboard"
+<RootWidget>
+    LoginScreen:
+        name: "login_screen"
+    SignUpScreen:
+        name: "sign_up_screen"
+    SignUpSuccess
+        name: "sign_up_success"
+    DashboardScreen
+        name: "dashboard_screen"
