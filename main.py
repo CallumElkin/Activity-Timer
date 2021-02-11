@@ -57,21 +57,21 @@ class SignUpSuccess(Screen):
 
 class DashboardScreen(Screen):
 
-    def stopwatch_start(self):
-        def time_convert(sec):
-            mins = sec // 60
-            sec = sec % 60
-            hours = mins // 60
-            mins = mins % 60
-            return("{0}:{1}:{2}".format(int(hours),int(mins),sec))
-        
-        def update_label(t):
-            self.ids.elapsed_time.text=str(time_elapsed)
-
+    def on_start(self, *args):
+        global start_time
         start_time=int(time.time())
-        time_elapsed=time_convert(int(time.time())-start_time)
-        Clock.schedule_interval(update_label, 1)
-        
+        Clock.schedule_interval(self.update_label, 1)
+
+    def update_label(self, t):
+        time_elapsed=int(time.time()-start_time)
+        self.ids.elapsed_time.text=str(time_elapsed)    
+
+    def time_convert(self, sec):
+        mins = sec // 60
+        sec = sec % 60
+        hours = mins // 60
+        mins = mins % 60
+        return("{0}:{1}:{2}".format(int(hours),int(mins),sec))
 
     def go_to_login_screen(self):
         self.manager.transition.direction="right"
