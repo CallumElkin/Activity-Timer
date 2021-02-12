@@ -85,6 +85,7 @@
             spacing:20,20
             TextInput:
                 hint_text: "Description"
+                id: entry_description
                 pos_hint: {'center_x': 0.45, 'center_y': 0.5}
                 size_hint: (0.3, 0.5)
             Button:
@@ -96,6 +97,7 @@
                 text: "Stop"
                 pos_hint: {'center_x': 0.8, 'center_y': 0.5}
                 size_hint: (0.1, 0.5)
+                on_press: root.on_stop(entry_description, elapsed_time)
             Label:
                 text: "0:0:0"
                 id: elapsed_time
@@ -132,8 +134,53 @@
                     halign: 'left'
                     valign: 'middle'
                     font_size: '18sp'
-                Button:
-                    text: "Dashboard"
+                ScrollView:
+                    GridLayout:
+                        cols: 1
+                        rows: 7
+                        size_hint_y: 0.9
+                        Label:
+                            id: dashboard_monday
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'top'
+                            text: 'Monday:'
+                        Label: 
+                            id: dashboard_tuesday
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'top'
+                            text: 'Tuesday:'
+                        Label: 
+                            id: dashboard_wednesday
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'top'
+                            text: 'Wednesday:'
+                        Label: 
+                            id: dashboard_thursday
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'top'
+                            text: 'Thursday:'
+                        Label: 
+                            id: dashboard_friday
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'top'
+                            text: 'Friday:'
+                        Label: 
+                            id: dashboard_saturday
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'top'
+                            text: 'Saturday:'
+                        Label: 
+                            id: dashboard_sunday
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'top'
+                            text: 'Sunday:'                   
 <RootWidget>
     LoginScreen:
         name: "login_screen"

@@ -22,6 +22,8 @@ class LoginScreen(Screen):
         with open('users.json') as file:
             users=json.load(file)
         if uname in users and users[uname]['password'] == pword:
+            global current_user
+            current_user = uname
             self.manager.current='dashboard_screen'
         else:
             self.ids.login_wrong.text='Wrong username or password'
@@ -45,7 +47,6 @@ class SignUpScreen(Screen):
             self.manager.current="sign_up_success"
 
     def go_to_login_screen(self):
-
         self.manager.transition.direction="right"
         self.manager.current="login_screen"
 
@@ -60,20 +61,38 @@ class DashboardScreen(Screen):
     def on_start(self, *args):
         global start_time
         start_time=int(time.time())
-        Clock.schedule_interval(self.update_label, 1)
+        self.function_interval = Clock.schedule_interval(self.update_label, 1)
 
     def update_label(self, t):
-        time_elapsed=int(time.time()-start_time)
-        self.ids.elapsed_time.text=str(time_elapsed)    
 
-    def time_convert(self, sec):
-        mins = sec // 60
-        sec = sec % 60
-        hours = mins // 60
-        mins = mins % 60
-        return("{0}:{1}:{2}".format(int(hours),int(mins),sec))
+        def time_convert(sec):
+            mins = sec // 60
+            sec = sec % 60
+            hours = mins // 60
+            mins = mins % 60
+            return("{0}:{1}:{2}".format(int(hours),int(mins),sec))
+        
+        global time_elapsed
+        time_elapsed=time_convert(int(time.time()-start_time))
+        self.ids.elapsed_time.text=str(time_elapsed)
+
+    def on_stop(self, *args):
+        current_date = date.time()
+        self.function_interval.cancel()
+        self.ids.elapsed_time.text="0:0:0"
+        with open ('entries.json', 'w') as file:
+            entries = json.load(file)
+
+# job for Monday - amend dict where date is already present + find way to pass *args to entries
+
+        if current_date in entries[current_user]:
+            entries[current_user][current_date] = {0:1}(*args)
+        else:
+            entries[current_user][current_date] = {0:1}(*args)
 
     def go_to_login_screen(self):
+        global current_user
+        current_user = None
         self.manager.transition.direction="right"
         self.manager.current="login_screen"
 
