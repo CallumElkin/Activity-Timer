@@ -83,8 +83,6 @@ class DashboardScreen(Screen):
         with open ('entries.json', 'w') as file:
             entries = json.load(file)
 
-# job for Monday - amend dict where date is already present + find way to pass *args to entries
-
         if current_date in entries[current_user]:
             entries[current_user][current_date] = [{0:1}](*args)
         else:
