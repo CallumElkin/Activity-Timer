@@ -86,9 +86,9 @@ class DashboardScreen(Screen):
 # job for Monday - amend dict where date is already present + find way to pass *args to entries
 
         if current_date in entries[current_user]:
-            entries[current_user][current_date] = {0:1}(*args)
+            entries[current_user][current_date] = [{0:1}](*args)
         else:
-            entries[current_user][current_date] = {0:1}(*args)
+            entries[current_user][current_date].append({0:1})(*args)
 
     def go_to_login_screen(self):
         global current_user
