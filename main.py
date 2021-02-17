@@ -4,7 +4,7 @@ import json
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-from datetime import datetime
+from datetime import date
 import time
 
 Builder.load_file('design.kv')
@@ -77,10 +77,10 @@ class DashboardScreen(Screen):
         self.ids.elapsed_time.text=str(time_elapsed)
 
     def on_stop(self, *args):
-        current_date = date.time()
+        current_date = str(date.today())
         self.function_interval.cancel()
         self.ids.elapsed_time.text="0:0:0"
-        with open ('entries.json', 'w') as file:
+        with open ('entries.json', 'r+') as file:
             entries = json.load(file)
 
         if current_date in entries[current_user]:
