@@ -4,6 +4,7 @@ import json
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from datetime import datetime
 from datetime import date
 import time
 
@@ -33,17 +34,24 @@ class SignUpScreen(Screen):
     def add_user(self, uname, pword):
         with open("users.json") as file:
             users = json.load(file)
-        if len(uname) < 6:
-            self.ids.username_creation_response.text='Username must be at least 6 characters long'
-        elif uname in users:
+        #if len(uname) < 6:
+            #self.ids.username_creation_response.text='Username must be at least 6 characters long'
+        if uname in users:
             self.ids.username_creation_response.text='That username is already taken'
-        elif len(pword) < 6:
-            self.ids.username_creation_response.text='Password must be at least 6 characters long'
+        #elif len(pword) < 6:
+            #self.ids.username_creation_response.text='Password must be at least 6 characters long'
         else:
             users[uname] = {'username': uname, 'password': pword,
             'created': datetime.now().strftime("%Y-%M-%D %H-%M-%S")}
             with open("users.json", 'w') as file:
                 json.dump(users, file)
+
+            with open ('entries.json', 'r+') as entry_file:
+                entries = json.load(entry_file)
+            entries[uname] = []
+            with open ('entries.json', 'w') as entry_file:
+                json.dump(entries, entry_file)
+
             self.manager.current="sign_up_success"
 
     def go_to_login_screen(self):
@@ -76,6 +84,8 @@ class DashboardScreen(Screen):
         time_elapsed=time_convert(int(time.time()-start_time))
         self.ids.elapsed_time.text=str(time_elapsed)
 
+#still fixing issue with nested dictionaries
+
     def on_stop(self, *args):
         current_date = str(date.today())
         self.function_interval.cancel()
@@ -84,9 +94,13 @@ class DashboardScreen(Screen):
             entries = json.load(file)
 
         if current_date in entries[current_user]:
-            entries[current_user][current_date] = [{0:1}](*args)
-        else:
             entries[current_user][current_date].append({0:1})(*args)
+        else:
+            entries[current_user].append({current_date:{}})
+            entries[current_user][current_date].append({0:1})(*args)
+
+        with open ('entries.json', 'r+') as file:
+            json.dump(entries, file)
 
     def go_to_login_screen(self):
         global current_user
