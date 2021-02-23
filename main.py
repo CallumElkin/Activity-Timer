@@ -84,20 +84,25 @@ class DashboardScreen(Screen):
         time_elapsed=time_convert(int(time.time()-start_time))
         self.ids.elapsed_time.text=str(time_elapsed)
 
-#still fixing issue with nested dictionaries
+# definition updated
 
-    def on_stop(self, *args):
+    def on_stop(self, description, time):
         current_date = str(date.today())
         self.function_interval.cancel()
         self.ids.elapsed_time.text="0:0:0"
         with open ('entries.json', 'r+') as file:
             entries = json.load(file)
 
-        if current_date in entries[current_user]:
-            entries[current_user][current_date].append({0:1})(*args)
+        b=False
+        for i in entries[current_user]:
+            if current_date in i:
+                b=True
+                
+        if b == True:
+            a = [a for a,d in enumerate(entries[current_user]) if current_date in d]
+            entries[current_user][a[0]][current_date][description]=time
         else:
-            entries[current_user].append({current_date:{}})
-            entries[current_user][current_date].append({0:1})(*args)
+            entries[current_user].append({current_date:{description:time}})
 
         with open ('entries.json', 'r+') as file:
             json.dump(entries, file)
