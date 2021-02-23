@@ -87,6 +87,8 @@ class DashboardScreen(Screen):
 # definition updated
 
     def on_stop(self, description, time):
+        description=description.text
+        time=str(time.text)
         current_date = str(date.today())
         self.function_interval.cancel()
         self.ids.elapsed_time.text="0:0:0"
