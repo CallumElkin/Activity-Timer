@@ -79,6 +79,8 @@
 <DashboardScreen>
     BoxLayout:
         orientation: 'vertical'
+
+        # Stopwatch and description box
         RelativeLayout:
             size_hint_y: 0.2
             padding:15, 15
@@ -104,6 +106,8 @@
                 id: elapsed_time
                 pos_hint: {'center_x': 0.95, 'center_y': 0.5}
                 size_hint: (0.3, 0.5)
+        
+        # Side bar buttons
         BoxLayout:
             orientation: 'horizontal'
             RelativeLayout:
@@ -125,6 +129,8 @@
                     size_y: 30
                     pos_hint: {'center_x': 0.5, 'center_y': 0.41}
                     on_press: root.go_to_login_screen()
+
+            # List of entries for the week (beneath the timer)
             GridLayout:
                 size_hint_x: 0.7
                 rows:2

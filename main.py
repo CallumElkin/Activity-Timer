@@ -6,11 +6,13 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from datetime import datetime
 from datetime import date
+import calendar
 import time
 
 Builder.load_file('design.kv')
         
 class MainApp(App):
+
     def build(self):
         return RootWidget()
 
@@ -84,17 +86,27 @@ class DashboardScreen(Screen):
         time_elapsed=time_convert(int(time.time()-start_time))
         self.ids.elapsed_time.text=str(time_elapsed)
 
-# definition updated
+# Stops the stopwatch and records the description & time in entries.json
+# Next step is to load entries into the week viewer
 
     def on_stop(self, description, time):
         description=description.text
         time=str(time.text)
-        current_date = str(date.today())
+        current_date=str(date.today())
+
+        # Gets the day of the week
+        year, month, day = (int(x) for x in current_date.split('-'))    
+        ans = datetime.date(year, month, day)
+        day_today = ans.strftime("%A")
+
+        #Stops+clears timer and opens entries.json
         self.function_interval.cancel()
         self.ids.elapsed_time.text="0:0:0"
+        self.ids.entry_description.text=''
         with open ('entries.json', 'r+') as file:
             entries = json.load(file)
 
+        #updates entries.json by adding the description + time to current_user's data for the current_date
         b=False
         for i in entries[current_user]:
             if current_date in i:
@@ -108,6 +120,12 @@ class DashboardScreen(Screen):
 
         with open ('entries.json', 'r+') as file:
             json.dump(entries, file)
+
+        if date_today == 'Monday':
+            label_text = self.ids.dashboard_monday.text
+            self.ids.dashboard_monday.text = ""
+
+# Returns current_user to login screen
 
     def go_to_login_screen(self):
         global current_user
