@@ -4,7 +4,7 @@ import json
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-from datetime import datetime
+import datetime
 from datetime import date
 import calendar
 import time
@@ -127,7 +127,9 @@ class DashboardScreen(Screen):
         ans = datetime.date(year, month, day)
         day_today = ans.strftime("%A")
 
-        self.ids.dashboard_monday.text = f"Monday: \n {i for i in entries[current_user][current_date]}"
+        with open ('entries.json') as file:
+            entries = json.load(file)
+        self.ids.dashboard_wednesday.text = f"Wednesday: \n {tuple(i for i in entries[current_user])}"
 
 # Returns current_user to login screen
 
