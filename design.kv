@@ -119,15 +119,21 @@
                     size_y: 30
                     pos_hint: {'center_x': 0.5, 'center_y': 0.81}
                 Button:
-                    text: "Account"
+                    text: "Update"
                     size_hint_y: None
                     size_y: 30
                     pos_hint: {'center_x': 0.5, 'center_y': 0.61}
+                    on_press: root.update()
+                Button:
+                    text: "Account"
+                    size_hint_y: None
+                    size_y: 30
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.41}
                 Button:
                     text: "Logout"
                     size_hint_y: None
                     size_y: 30
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.41}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.21}
                     on_press: root.go_to_login_screen()
 
             # List of entries for the week (beneath the timer)

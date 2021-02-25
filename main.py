@@ -68,6 +68,9 @@ class SignUpSuccess(Screen):
 
 class DashboardScreen(Screen):
 
+    global current_date
+    current_date=str(date.today())
+
     def on_start(self, *args):
         global start_time
         start_time=int(time.time())
@@ -92,12 +95,6 @@ class DashboardScreen(Screen):
     def on_stop(self, description, time):
         description=description.text
         time=str(time.text)
-        current_date=str(date.today())
-
-        # Gets the day of the week
-        year, month, day = (int(x) for x in current_date.split('-'))    
-        ans = datetime.date(year, month, day)
-        day_today = ans.strftime("%A")
 
         #Stops+clears timer and opens entries.json
         self.function_interval.cancel()
@@ -121,9 +118,16 @@ class DashboardScreen(Screen):
         with open ('entries.json', 'r+') as file:
             json.dump(entries, file)
 
-        if date_today == 'Monday':
-            label_text = self.ids.dashboard_monday.text
-            self.ids.dashboard_monday.text = ""
+
+    # updates the Mon-Fri dashboard with all of the entries for the current week
+    def update(self):
+
+        # Gets the day of the week
+        year, month, day = (int(x) for x in current_date.split('-'))    
+        ans = datetime.date(year, month, day)
+        day_today = ans.strftime("%A")
+
+        self.ids.dashboard_monday.text = f"Monday: \n {i for i in entries[current_user][current_date]}"
 
 # Returns current_user to login screen
 
